@@ -284,8 +284,10 @@ class RegistrationProfile(models.Model):
             'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
             'site': site,
         })
-        subject = getattr(settings, 'REGISTRATION_EMAIL_SUBJECT_PREFIX', '') + \  # noqa E501
-                  render_to_string('registration/activation_email_subject.txt', ctx_dict)  # noqa E501
+        subject = getattr(
+            settings,
+            'REGISTRATION_EMAIL_SUBJECT_PREFIX', ''
+        ) + render_to_string('registration/activation_email_subject.txt', ctx_dict)  # noqa E501
         # Email subject *must not* contain newlines
         subject = ''.join(subject.splitlines())
 
