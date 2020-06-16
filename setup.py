@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 import sys
 
-from registration import get_version
+from registration_redux import get_version
 
 
 class PyTest(TestCommand):
