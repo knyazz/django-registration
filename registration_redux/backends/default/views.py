@@ -2,10 +2,10 @@ from django.conf import settings
 from django.contrib.sites.models import RequestSite
 from django.contrib.sites.models import Site
 
-from registration import signals
-from registration.models import RegistrationProfile
-from registration.views import ActivationView as BaseActivationView
-from registration.views import RegistrationView as BaseRegistrationView
+from registration_redux import signals
+from registration_redux.models import RegistrationProfile
+from registration_redux.views import ActivationView as BaseActivationView
+from registration_redux.views import RegistrationView as BaseRegistrationView
 
 
 class RegistrationView(BaseRegistrationView):
@@ -80,7 +80,7 @@ class RegistrationView(BaseRegistrationView):
         class of this backend as the sender.
 
         """
-        username, email, password = cleaned_data['username'], cleaned_data['email'], cleaned_data['password1']
+        username, email, password = cleaned_data['username'], cleaned_data['email'], cleaned_data['password1']  # noqa E501
         if Site._meta.installed:
             site = Site.objects.get_current()
         else:
@@ -131,7 +131,7 @@ class ActivationView(BaseActivationView):
         the class of this backend as the sender.
 
         """
-        activated_user = RegistrationProfile.objects.activate_user(activation_key)
+        activated_user = RegistrationProfile.objects.activate_user(activation_key)  # noqa E501
         if activated_user:
             signals.user_activated.send(sender=self.__class__,
                                         user=activated_user,

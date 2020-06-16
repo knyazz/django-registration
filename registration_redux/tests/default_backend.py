@@ -1,19 +1,16 @@
 import datetime
 
 from django.conf import settings
-from django.contrib.sites.models import Site
 from django.core import mail
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
 
-from registration import signals
-from registration.admin import RegistrationAdmin
-from registration.forms import RegistrationForm
-from registration.backends.default.views import RegistrationView
-from registration.models import RegistrationProfile
-from registration.users import UserModel
+from registration_redux.forms import RegistrationForm
+from registration_redux.backends.default.views import RegistrationView
+from registration_redux.models import RegistrationProfile
+from registration_redux.users import UserModel
 
 
 class DefaultBackendViewTests(TestCase):
@@ -34,9 +31,9 @@ class DefaultBackendViewTests(TestCase):
         and set ``ACCOUNT_ACTIVATION_DAYS`` if it's not set already.
 
         """
-        self.old_activation = getattr(settings, 'ACCOUNT_ACTIVATION_DAYS', None)
+        self.old_activation = getattr(settings, 'ACCOUNT_ACTIVATION_DAYS', None)  # noqa E501
         if self.old_activation is None:
-            settings.ACCOUNT_ACTIVATION_DAYS = 7 # pragma: no cover
+            settings.ACCOUNT_ACTIVATION_DAYS = 7  # pragma: no cover
 
     def tearDown(self):
         """
@@ -45,7 +42,7 @@ class DefaultBackendViewTests(TestCase):
 
         """
         if self.old_activation is None:
-            settings.ACCOUNT_ACTIVATION_DAYS = self.old_activation # pragma: no cover
+            settings.ACCOUNT_ACTIVATION_DAYS = self.old_activation  # pragma: no cover  # noqa E501
 
     def test_allow(self):
         """
@@ -115,7 +112,6 @@ class DefaultBackendViewTests(TestCase):
         self.assertEqual(RegistrationProfile.objects.count(), 1)
         self.assertEqual(len(mail.outbox), 1)
 
-
     def test_registration_no_email(self):
         """
         Overriden Registration view does not send an activation email if the
@@ -127,13 +123,13 @@ class DefaultBackendViewTests(TestCase):
 
         request_factory = RequestFactory()
         view = RegistrationNoEmailView.as_view()
-        resp = view(request_factory.post('/', data={
+        view(request_factory.post('/', data={
             'username': 'bob',
             'email': 'bob@example.com',
             'password1': 'secret',
             'password2': 'secret'}))
 
-        new_user = UserModel().objects.get(username='bob')
+        UserModel().objects.get(username='bob')
         # A registration profile was created, and no activation email was sent.
         self.assertEqual(RegistrationProfile.objects.count(), 1)
         self.assertEqual(len(mail.outbox), 0)
@@ -194,7 +190,7 @@ class DefaultBackendViewTests(TestCase):
 
         resp = self.client.get(reverse('registration_activate',
                                        args=(),
-                                       kwargs={'activation_key': profile.activation_key}))
+                                       kwargs={'activation_key': profile.activation_key}))  # noqa E501
         self.assertRedirects(resp, reverse('registration_activation_complete'))
 
     def test_activation_expired(self):
@@ -210,12 +206,12 @@ class DefaultBackendViewTests(TestCase):
 
         profile = RegistrationProfile.objects.get(user__username='bob')
         user = profile.user
-        user.date_joined -= datetime.timedelta(days=settings.ACCOUNT_ACTIVATION_DAYS)
+        user.date_joined -= datetime.timedelta(days=settings.ACCOUNT_ACTIVATION_DAYS)  # noqa E501
         user.save()
 
         resp = self.client.get(reverse('registration_activate',
                                        args=(),
-                                       kwargs={'activation_key': profile.activation_key}))
+                                       kwargs={'activation_key': profile.activation_key}))  # noqa E501
 
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')

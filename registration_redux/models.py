@@ -105,7 +105,7 @@ class RegistrationManager(models.Manager):
         username and a random salt.
 
         """
-        salt = hashlib.sha1(six.text_type(random.random()).encode('ascii')).hexdigest()[:5]
+        salt = hashlib.sha1(six.text_type(random.random()).encode('ascii')).hexdigest()[:5]  # noqa E501
         salt = salt.encode('ascii')
         username = user.username
         if isinstance(username, six.text_type):
@@ -184,7 +184,7 @@ class RegistrationProfile(models.Model):
     """
     ACTIVATED = "ALREADY_ACTIVATED"
 
-    user = models.ForeignKey(UserModelString(), unique=True, verbose_name=_('user'))
+    user = models.ForeignKey(UserModelString(), unique=True, verbose_name=_('user'))  # noqa E501
     activation_key = models.CharField(_('activation key'), max_length=40)
 
     objects = RegistrationManager()
@@ -218,7 +218,7 @@ class RegistrationProfile(models.Model):
            method returns ``True``.
 
         """
-        expiration_date = datetime.timedelta(days=settings.ACCOUNT_ACTIVATION_DAYS)
+        expiration_date = datetime.timedelta(days=settings.ACCOUNT_ACTIVATION_DAYS)  # noqa E501
         return (self.activation_key == self.ACTIVATED or
                 (self.user.date_joined + expiration_date <= datetime_now()))
     activation_key_expired.boolean = True
@@ -284,16 +284,16 @@ class RegistrationProfile(models.Model):
             'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
             'site': site,
         })
-        subject = getattr(settings, 'REGISTRATION_EMAIL_SUBJECT_PREFIX', '') + \
-                  render_to_string('registration/activation_email_subject.txt', ctx_dict)
+        subject = getattr(settings, 'REGISTRATION_EMAIL_SUBJECT_PREFIX', '') + \  # noqa E501
+                  render_to_string('registration/activation_email_subject.txt', ctx_dict)  # noqa E501
         # Email subject *must not* contain newlines
         subject = ''.join(subject.splitlines())
 
-        message_txt = render_to_string('registration/activation_email.txt', ctx_dict)
-        email_message = EmailMultiAlternatives(subject, message_txt, settings.DEFAULT_FROM_EMAIL, [self.user.email])
+        message_txt = render_to_string('registration/activation_email.txt', ctx_dict)  # noqa E501
+        email_message = EmailMultiAlternatives(subject, message_txt, settings.DEFAULT_FROM_EMAIL, [self.user.email])  # noqa E501
 
         try:
-            message_html = render_to_string('registration/activation_email.html', ctx_dict)
+            message_html = render_to_string('registration/activation_email.html', ctx_dict)  # noqa E501
         except TemplateDoesNotExist:
             message_html = None
 

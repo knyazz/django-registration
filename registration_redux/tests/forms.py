@@ -2,8 +2,8 @@ from __future__ import unicode_literals
 
 from django.test import TestCase
 
-from registration import forms
-from registration.users import UserModel
+from registration_redux import forms
+from registration_redux.users import UserModel
 
 
 class RegistrationFormTests(TestCase):
@@ -27,13 +27,13 @@ class RegistrationFormTests(TestCase):
                       'email': 'foo@example.com',
                       'password1': 'foo',
                       'password2': 'foo'},
-            'error': ('username', ["This value may contain only letters, numbers and @/./+/-/_ characters."])},
+            'error': ('username', ["This value may contain only letters, numbers and @/./+/-/_ characters."])},  # noqa E501
             # Already-existing username.
             {'data': {'username': 'alice',
                       'email': 'alice@example.com',
                       'password1': 'secret',
                       'password2': 'secret'},
-            'error': ('username', ["A user with that username already exists."])},
+            'error': ('username', ["A user with that username already exists."])},  # noqa E501
             # Mismatched passwords.
             {'data': {'username': 'foo',
                       'email': 'foo@example.com',
@@ -61,7 +61,7 @@ class RegistrationFormTests(TestCase):
 
         """
         form = forms.RegistrationFormTermsOfService(data={'username': 'foo',
-                                                          'email': 'foo@example.com',
+                                                          'email': 'foo@example.com',  # noqa E501
                                                           'password1': 'foo',
                                                           'password2': 'foo'})
         self.failIf(form.is_valid())
@@ -69,7 +69,7 @@ class RegistrationFormTests(TestCase):
                          ["You must agree to the terms to register"])
 
         form = forms.RegistrationFormTermsOfService(data={'username': 'foo',
-                                                          'email': 'foo@example.com',
+                                                          'email': 'foo@example.com',  # noqa E501
                                                           'password1': 'foo',
                                                           'password2': 'foo',
                                                           'tos': 'on'})
@@ -86,15 +86,15 @@ class RegistrationFormTests(TestCase):
         UserModel().objects.create_user('alice', 'alice@example.com', 'secret')
 
         form = forms.RegistrationFormUniqueEmail(data={'username': 'foo',
-                                                       'email': 'alice@example.com',
+                                                       'email': 'alice@example.com',  # noqa E501
                                                        'password1': 'foo',
                                                        'password2': 'foo'})
         self.failIf(form.is_valid())
         self.assertEqual(form.errors['email'],
-                         ["This email address is already in use. Please supply a different email address."])
+                         ["This email address is already in use. Please supply a different email address."])  # noqa E501
 
         form = forms.RegistrationFormUniqueEmail(data={'username': 'foo',
-                                                       'email': 'foo@example.com',
+                                                       'email': 'foo@example.com',  # noqa E501
                                                        'password1': 'foo',
                                                        'password2': 'foo'})
         self.failUnless(form.is_valid())
@@ -114,7 +114,7 @@ class RegistrationFormTests(TestCase):
             form = forms.RegistrationFormNoFreeEmail(data=invalid_data)
             self.failIf(form.is_valid())
             self.assertEqual(form.errors['email'],
-                             ["Registration using free email addresses is prohibited. Please supply a different email address."])
+                             ["Registration using free email addresses is prohibited. Please supply a different email address."])  # noqa E501
 
         base_data['email'] = 'foo@example.com'
         form = forms.RegistrationFormNoFreeEmail(data=base_data)

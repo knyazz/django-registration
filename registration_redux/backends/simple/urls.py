@@ -22,18 +22,21 @@ from django.conf.urls import patterns
 from django.conf.urls import url
 from django.views.generic.base import TemplateView
 
-from registration.backends.simple.views import RegistrationView
+from registration_redux.backends.simple.views import RegistrationView
 
 
-urlpatterns = patterns('',
-                       url(r'^register/$',
-                           RegistrationView.as_view(),
-                           name='registration_register'),
-                       url(r'^register/closed/$',
-                           TemplateView.as_view(template_name='registration/registration_closed.html'),
-                           name='registration_disallowed'),
-                       url(r'^register/complete/$',
-                           TemplateView.as_view(template_name='registration/registration_complete.html'),
-                           name='registration_complete'),
-                       (r'', include('registration.auth_urls')),
-                       )
+urlpatterns = patterns(
+    '',
+    url(r'^register/$',
+        RegistrationView.as_view(),
+        name='registration_register'),
+    url(r'^register/closed/$',
+        TemplateView.as_view(
+            template_name='registration_redux/registration_closed.html'),
+        name='registration_disallowed'),
+    url(r'^register/complete/$',
+        TemplateView.as_view(
+            template_name='registration_redux/registration_complete.html'),
+        name='registration_complete'),
+    (r'', include('registration_redux.auth_urls')),
+)

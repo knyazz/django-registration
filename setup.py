@@ -17,6 +17,7 @@ class PyTest(TestCommand):
         errno = pytest.main(self.test_args)
         sys.exit(errno)
 
+
 setup(
     name='django-registration-redux',
     version=get_version().replace(' ', '-'),
@@ -25,12 +26,13 @@ setup(
     author='Andrew Cutler',
     author_email='macropin@gmail.com',
     url='https://github.com/macropin/django-registration',
-    package_dir={'registration': 'registration'},
+    package_dir={'registration_redux': 'registration_redux'},
     packages=find_packages(exclude='test_app'),
     tests_require=['pytest-django'],
     cmdclass={'test': PyTest},
     include_package_data=True,
-    classifiers=['Development Status :: 5 - Production/Stable',
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',

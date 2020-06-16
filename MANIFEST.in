@@ -6,4 +6,4 @@ include README.rst
 include AUTHORS
 recursive-include docs *
 prune docs/_build
-recursive-include registration/locale *
+recursive-include registration_redux/locale *

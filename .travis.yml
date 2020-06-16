@@ -30,7 +30,7 @@ before_script:
   - rm -rf build
 
 script:
-  - coverage run --source=registration setup.py test
+  - coverage run --source=registration_redux setup.py test
 
 after_success:
   - coveralls --verbose

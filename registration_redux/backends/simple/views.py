@@ -2,9 +2,9 @@ from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 
-from registration import signals
-from registration.views import RegistrationView as BaseRegistrationView
-from registration.users import UserModel
+from registration_redux import signals
+from registration_redux.views import RegistrationView as BaseRegistrationView
+from registration_redux.users import UserModel
 
 
 class RegistrationView(BaseRegistrationView):
@@ -16,7 +16,7 @@ class RegistrationView(BaseRegistrationView):
 
     """
     def register(self, request, **cleaned_data):
-        username, email, password = cleaned_data['username'], cleaned_data['email'], cleaned_data['password1']
+        username, email, password = cleaned_data['username'], cleaned_data['email'], cleaned_data['password1']   # noqa E501
         UserModel().objects.create_user(username, email, password)
 
         new_user = authenticate(username=username, password=password)

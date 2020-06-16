@@ -2,8 +2,8 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
-from registration.forms import RegistrationForm
-from registration.users import UserModel
+from registration_redux.forms import RegistrationForm
+from registration_redux.users import UserModel
 
 
 class SimpleBackendViewTests(TestCase):

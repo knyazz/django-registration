@@ -13,7 +13,7 @@ from __future__ import unicode_literals
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from registration.users import UserModel
+from registration_redux.users import UserModel
 
 
 class RegistrationForm(forms.Form):
@@ -34,7 +34,7 @@ class RegistrationForm(forms.Form):
     username = forms.RegexField(regex=r'^[\w.@+-]+$',
                                 max_length=30,
                                 label=_("Username"),
-                                error_messages={'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters.")})
+                                error_messages={'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters.")})  # noqa E501
     email = forms.EmailField(label=_("E-mail"))
     password1 = forms.CharField(widget=forms.PasswordInput,
                                 label=_("Password"))
@@ -47,9 +47,9 @@ class RegistrationForm(forms.Form):
         in use.
 
         """
-        existing = UserModel().objects.filter(username__iexact=self.cleaned_data['username'])
+        existing = UserModel().objects.filter(username__iexact=self.cleaned_data['username'])  # noqa E501
         if existing.exists():
-            raise forms.ValidationError(_("A user with that username already exists."))
+            raise forms.ValidationError(_("A user with that username already exists."))  # noqa E501
         else:
             return self.cleaned_data['username']
 
@@ -61,9 +61,9 @@ class RegistrationForm(forms.Form):
         field.
 
         """
-        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
-            if self.cleaned_data['password1'] != self.cleaned_data['password2']:
-                raise forms.ValidationError(_("The two password fields didn't match."))
+        if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:  # noqa E501
+            if self.cleaned_data['password1'] != self.cleaned_data['password2']:  # noqa E501
+                raise forms.ValidationError(_("The two password fields didn't match."))  # noqa E501
         return self.cleaned_data
 
 
@@ -74,8 +74,8 @@ class RegistrationFormTermsOfService(RegistrationForm):
 
     """
     tos = forms.BooleanField(widget=forms.CheckboxInput,
-                             label=_('I have read and agree to the Terms of Service'),
-                             error_messages={'required': _("You must agree to the terms to register")})
+                             label=_('I have read and agree to the Terms of Service'),  # noqa E501
+                             error_messages={'required': _("You must agree to the terms to register")})  # noqa E501
 
 
 class RegistrationFormUniqueEmail(RegistrationForm):
@@ -90,8 +90,8 @@ class RegistrationFormUniqueEmail(RegistrationForm):
         site.
 
         """
-        if UserModel().objects.filter(email__iexact=self.cleaned_data['email']):
-            raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
+        if UserModel().objects.filter(email__iexact=self.cleaned_data['email']):  # noqa E501
+            raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))  # noqa E501
         return self.cleaned_data['email']
 
 
@@ -118,5 +118,5 @@ class RegistrationFormNoFreeEmail(RegistrationForm):
         """
         email_domain = self.cleaned_data['email'].split('@')[1]
         if email_domain in self.bad_domains:
-            raise forms.ValidationError(_("Registration using free email addresses is prohibited. Please supply a different email address."))
+            raise forms.ValidationError(_("Registration using free email addresses is prohibited. Please supply a different email address."))  # noqa E501
         return self.cleaned_data['email']

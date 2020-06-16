@@ -10,7 +10,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.sessions',
     'django.contrib.contenttypes',
-    'registration',
+    'registration_redux',
     'test_app',
 )
 
